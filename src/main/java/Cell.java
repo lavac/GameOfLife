@@ -21,4 +21,8 @@ public class Cell {
     public int getyCoordinate() {
         return yCoordinate;
     }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
 }
