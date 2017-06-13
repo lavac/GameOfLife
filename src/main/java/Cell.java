@@ -11,6 +11,23 @@ public class Cell {
         this.isAlive = isAlive;
     }
 
+    @Override
+    public String toString() {
+        return "Cell{" +
+                "xCoordinate=" + xCoordinate +
+                ", yCoordinate=" + yCoordinate +
+                ", isAlive=" + isAlive +
+                ", futureCellState=" + futureCellState +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Cell cell = (Cell) obj;
+        return (cell.getyCoordinate() == yCoordinate && cell.getxCoordinate()
+                == xCoordinate);
+    }
+
     boolean isAlive() {
         return isAlive;
     }

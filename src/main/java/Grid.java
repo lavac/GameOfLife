@@ -4,7 +4,6 @@ public class Grid {
     private int upperXCoordinate;
     private int upperYCoordinate;
     private Cell[][] grid;
-    private ArrayList<Cell> listOfLiveCells;
 
     public Grid(int upperXCoordinate, int upperYCoordinate) {
         this.upperXCoordinate = upperXCoordinate;
@@ -24,7 +23,7 @@ public class Grid {
         for (int row = 0; row < upperXCoordinate; row++) {
             for (int column = 0; column < upperYCoordinate; column++) {
                 int countOfLiveNeighbours = getCountOfLiveNeighbours(row, column);
-                if(isCellAvailable(row, column)) {
+                if(isValidCell(row, column)) {
                     if (countOfLiveNeighbours != 2 && countOfLiveNeighbours != 3) {
                         getCell(row, column).setFutureCellState(false);
                     }
@@ -39,11 +38,13 @@ public class Grid {
 
     private Grid generateNewGenerationGrid() {
         Grid nextGenerationGrid = new Grid(upperXCoordinate, upperYCoordinate);
-        for (int row = 0; row < upperXCoordinate; row++) {
-            for (int column = 0; column < upperYCoordinate; column++) {
-                Cell currentCell = getCell(row, column);
-                currentCell.applyStateTransition();
-                nextGenerationGrid.add(currentCell);
+        for (int row = 0; row <= upperXCoordinate; row++) {
+            for (int column = 0; column <= upperYCoordinate; column++) {
+                if(isValidCell(row, column)) {
+                    Cell currentCell = getCell(row, column);
+                    currentCell.applyStateTransition();
+                    nextGenerationGrid.add(currentCell);
+                }
             }
         }
         return nextGenerationGrid;
@@ -53,10 +54,15 @@ public class Grid {
         int aliveNeighbours = 0;
         for (int currentRow = row - 1; currentRow <= row + 1; currentRow++) {
             for (int currentColumn = column - 1; currentColumn <= column + 1; currentColumn++) {
-
-                if (isCellAvailable(currentRow, currentColumn)) {
-                    Cell currentCell = getCell(currentRow, currentColumn);
-
+                if (isValidCell(currentRow, currentColumn)) {
+                    Cell currentCell;
+                    if (isCellAvailable(currentRow, currentColumn)) {
+                        currentCell = getCell(currentRow, currentColumn);
+                    } else {
+                        currentCell = new Cell(currentRow, currentColumn,
+                                               false);
+                        add(currentCell);
+                    }
                     if (currentCell.isAlive())
                         aliveNeighbours++;
                 }
@@ -66,14 +72,28 @@ public class Grid {
     }
 
     private boolean isCellAvailable(int xCoordinate, int yCoordinate) {
+        if (getCell(xCoordinate, yCoordinate) != null)
+            return true;
+        return false;
+    }
+
+    private boolean isValidCell(int xCoordinate, int yCoordinate) {
         if (xCoordinate <= upperXCoordinate && yCoordinate <= upperYCoordinate
                 && xCoordinate >= 0 && yCoordinate >= 0)
-            if (getCell(xCoordinate, yCoordinate) != null)
-                return true;
+            return true;
         return false;
     }
 
     public ArrayList<Cell> getListOfLiveCells() {
-        return listOfLiveCells;
+        ArrayList<Cell> listOfLiveCells = new ArrayList<>();
+
+        for (int row = 0; row <= upperXCoordinate; row++) {
+            for (int column = 0; column <= upperYCoordinate; column++) {
+                if (isValidCell(row, column) &&  getCell(row, column).isAlive()) {
+                    listOfLiveCells.add(getCell(row, column));
+                }
+            }
+        }
+    return listOfLiveCells;
     }
 }
