@@ -1,6 +1,5 @@
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class TestCell {
@@ -11,10 +10,5 @@ public class TestCell {
         assertTrue(cell.isAlive());
     }
 
-    @Test
-    public void shouldCreateGrid(){
-        Grid grid = new Grid(4, 4);
-        assertNotNull(grid);
-    }
-     
+
 }
