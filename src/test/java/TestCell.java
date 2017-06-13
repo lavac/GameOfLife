@@ -9,6 +9,4 @@ public class TestCell {
         Cell cell = new Cell(1, 2, true);
         assertTrue(cell.isAlive());
     }
-
-
 }

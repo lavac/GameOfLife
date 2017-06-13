@@ -1,5 +1,8 @@
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -10,7 +13,9 @@ public class TestGrid {
     public void shouldAddCellToTheGrid() {
         Grid grid = new Grid(4, 4);
         Cell cell = new Cell(1, 2, true);
+
         grid.add(cell);
+
         assertEquals(cell,grid.getCell(cell.getxCoordinate(), cell.getyCoordinate()));
     }
 
@@ -18,7 +23,9 @@ public class TestGrid {
     public void aLonelyCellShouldDieInNextGeneration() {
         Grid grid = new Grid(4, 4);
         Cell cell1 = new Cell(0, 0, true);
+
         grid.add(cell1);
+
         grid.nextGeneration();
         assertFalse(grid.getCell(0, 0).isAlive());
     }
@@ -59,19 +66,60 @@ public class TestGrid {
         assertTrue(cell1.isAlive());
     }
 
+    @Test
+    public void shouldReturnTheNextGenerationCells() {
+        Grid grid = new Grid(4, 4);
+        Cell cell1 = new Cell(1, 1, true);
+        Cell cell2 = new Cell(1, 2, true);
+        Cell cell3 = new Cell(2, 1, true);
 
-//    @Test
-//    public void shouldReturnTheNextGenerationCells() {
-//        Grid grid = new Grid(4, 4);
-//        Cell cell1 = new Cell(1, 1, true);
-//        Cell cell2 = new Cell(1, 2, true);
-//        Cell cell3 = new Cell(2, 1, true);
-//        grid.add(cell1);
-//        grid.add(cell2);
-//        grid.add(cell3);
-//        grid.nextGeneration();
-//        assertEquals(cell1, grid.getCell(1, 1));
-//        assertEquals(cell2, grid.getCell(1,2));
-//        assertEquals(cell3, grid.getCell(2,1));
-//    }
+        grid.add(cell1);
+        grid.add(cell2);
+        grid.add(cell3);
+
+        Grid nextGenerationGrid = grid.nextGeneration();
+
+        assertEquals(cell1, grid.getCell(1, 1));
+        assertEquals(cell2, grid.getCell(1,2));
+        assertEquals(cell3, grid.getCell(2,1));
+    }
+
+    @Test
+    public void shouldReturnTheCellsAliveInNextGeneration() {
+
+        Grid grid = new Grid(4, 4);
+        Cell cell1 = new Cell(1, 1, true);
+        Cell cell2 = new Cell(1, 2, true);
+        Cell cell3 = new Cell(1, 3, true);
+        Cell cell4 = new Cell(2, 2, true);
+        Cell cell5 = new Cell(2, 3, true);
+        Cell cell6 = new Cell(2, 4, true);
+
+        ArrayList<Cell> listOfExpectedCells = new ArrayList<>();
+
+        Cell expectedCell1 = new Cell(0, 2, true);
+        Cell expectedCell2 = new Cell(1, 1, true);
+        Cell expectedCell3 = new Cell(1, 4, true);
+        Cell expectedCell4 = new Cell(2, 1, true);
+        Cell expectedCell5 = new Cell(2, 4, true);
+        Cell expectedCell6 = new Cell(3, 3, true);
+
+        listOfExpectedCells.add(expectedCell1);
+        listOfExpectedCells.add(expectedCell1);
+        listOfExpectedCells.add(expectedCell1);
+        listOfExpectedCells.add(expectedCell1);
+        listOfExpectedCells.add(expectedCell1);
+        listOfExpectedCells.add(expectedCell1);
+
+
+        grid.add(cell1);
+        grid.add(cell2);
+        grid.add(cell3);
+        grid.add(cell4);
+        grid.add(cell5);
+        grid.add(cell6);
+        grid.nextGeneration();
+
+        assertEquals(listOfExpectedCells, grid.getListOfLiveCells());
+    }
 }

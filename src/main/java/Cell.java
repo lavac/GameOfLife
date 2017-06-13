@@ -3,6 +3,7 @@ public class Cell {
     private int xCoordinate;
     private int yCoordinate;
     private boolean isAlive;
+    private boolean futureCellState;
 
     public Cell(int xCoordinate, int yCoordinate, boolean isAlive) {
         this.xCoordinate = xCoordinate;
@@ -24,5 +25,13 @@ public class Cell {
 
     public void setAlive(boolean alive) {
         isAlive = alive;
+    }
+
+    public void applyStateTransition() {
+        setAlive(futureCellState);
+    }
+
+    public void setFutureCellState(boolean futureCellState) {
+        this.futureCellState = futureCellState;
     }
 }
